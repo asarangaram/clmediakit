@@ -3,3 +3,4 @@ clmediakit.egg-info/**
 media/** 
 
 build/** 
+**/.DS_Store
