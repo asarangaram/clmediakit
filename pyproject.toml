@@ -2,15 +2,18 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+packages = ['clmediakit']
+
 [project]
 name = "clmediakit"
 version = "0.1.0"
 description = "A simple media kit for metadata extraction and similarity search"
 authors = [{ name = "Ananda Sarangaram", email = "asarangaram@gmail.com" }]
-license = { file = "LICENSE" }
+license-files = ["LICENSE" ]
 dependencies = [
     "hnswlib==0.8.0",
-    "imagedominantcolor @ git+https://github.com/asarangaram/imagedominantcolor.git@2b68e33463b8cadee101fed9dbff549ee3f92da7",
+    "imagedominantcolor @ git+https://github.com/asarangaram/imagedominantcolor.git@e188d51758513a4a8f6d740c133c2b4e44b4ce35",
     "ImageHash==4.3.2",
     "numpy==2.2.3",
     "pillow==11.1.0",
