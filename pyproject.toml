@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clmediakit"
+version = "0.1.0"
+description = "A simple media kit for metadata extraction and similarity search"
+authors = [{ name = "Ananda Sarangaram", email = "asarangaram@gmail.com" }]
+license = { file = "LICENSE" }
+dependencies = [
+    "hnswlib==0.8.0",
+    "imagedominantcolor @ git+https://github.com/asarangaram/imagedominantcolor.git@2b68e33463b8cadee101fed9dbff549ee3f92da7",
+    "ImageHash==4.3.2",
+    "numpy==2.2.3",
+    "pillow==11.1.0",
+    "PyWavelets==1.8.0",
+    "scipy==1.15.2",
+    "setuptools==76.0.0",
+    "videohash @ git+https://github.com/asarangaram/videohash.git@44e6928d29388839871eb1e0ca39605eb253e245",
+    "yt-dlp==2025.2.19",
+]
