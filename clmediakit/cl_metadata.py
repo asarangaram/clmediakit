@@ -9,6 +9,10 @@ from .exif_tool_wrapper import MetadataExtractor
 
 
 class CLMetaData:
+    """
+    A class to represent and extract metadata from media files (images and videos).
+    """
+
     chunk_size = 8192
 
     def __init__(
@@ -22,6 +26,19 @@ class CLMetaData:
         dHash=None,
         md5=None,
     ):
+        """
+        Initialize CLMetaData with optional metadata attributes.
+
+        Args:
+            CreateDate (str): Creation date of the media.
+            FileSize (int): Size of the file in bytes.
+            ImageHeight (int): Height of the image in pixels.
+            ImageWidth (int): Width of the image in pixels.
+            Duration (float): Duration of the video in seconds.
+            MIMEType (str): MIME type of the media.
+            dHash (str): Difference hash of the media.
+            md5 (str): MD5 hash of the media.
+        """
         self.CreateDate = CreateDate
         self.FileSize = FileSize
         self.ImageHeight = ImageHeight
@@ -33,6 +50,16 @@ class CLMetaData:
 
     @classmethod
     def from_media(cls, filepath, extractor=None):
+        """
+        Create a CLMetaData instance by extracting metadata from a media file.
+
+        Args:
+            filepath (str): Path to the media file.
+            extractor (MetadataExtractor, optional): Metadata extractor instance.
+
+        Returns:
+            CLMetaData: An instance of CLMetaData with extracted metadata.
+        """
         if extractor is None:
             extractor = MetadataExtractor()
         metadata = extractor.extract_metadata(
@@ -60,12 +87,30 @@ class CLMetaData:
         return cl_metadata
 
     def is_video(self):
+        """
+        Check if the media is a video.
+
+        Returns:
+            bool: True if the media is a video, False otherwise.
+        """
         return self.MIMEType is not None and self.MIMEType.startswith("video")
 
     def is_image(self):
+        """
+        Check if the media is an image.
+
+        Returns:
+            bool: True if the media is an image, False otherwise.
+        """
         return self.MIMEType is not None and self.MIMEType.startswith("image")
 
     def compute_dhash(self):
+        """
+        Compute the difference hash (dHash) of the media.
+
+        Returns:
+            str: The computed dHash, or None if the media type is unsupported.
+        """
         if self.is_video():
             return VideoHash(path=self.path).hash
         elif self.is_image():
@@ -74,6 +119,12 @@ class CLMetaData:
             return None
 
     def compute_md5(self):
+        """
+        Compute the MD5 hash of the media.
+
+        Returns:
+            str: The computed MD5 hash, or None if the media type is unsupported.
+        """
         if self.is_video():
             cmd = [
                 "ffmpeg",

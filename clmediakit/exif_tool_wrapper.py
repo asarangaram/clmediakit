@@ -4,11 +4,24 @@ import subprocess
 
 
 class MetadataExtractor:
+    """
+    A wrapper class for extracting metadata from media files using ExifTool.
+    """
+
     def __init__(self):
+        """
+        Initialize the MetadataExtractor and check for ExifTool availability.
+        """
         if not self.is_exiftool_available():
             raise RuntimeError("ExifTool is not installed or not found in PATH.")
 
     def is_exiftool_available(self):
+        """
+        Check if ExifTool is available in the system.
+
+        Returns:
+            bool: True if ExifTool is available, False otherwise.
+        """
         try:
             subprocess.run(
                 ["exiftool", "-ver"], check=True, capture_output=True, text=True
@@ -20,6 +33,16 @@ class MetadataExtractor:
             return False
 
     def extract_metadata(self, filepath, tags=None):
+        """
+        Extract metadata from a media file using ExifTool.
+
+        Args:
+            filepath (str): Path to the media file.
+            tags (list, optional): List of metadata tags to extract.
+
+        Returns:
+            dict: Extracted metadata as a dictionary.
+        """
         if not os.path.exists(filepath):
             print(f"Error: File not found - {filepath}")
             return {}
