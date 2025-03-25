@@ -82,8 +82,8 @@ class CLMetaData:
             MIMEType=metadata.get("MIMEType"),
         )
         if cl_metadata.MIMEType is not None:
-            cl_metadata.dHash = CLMetaData.compute_dhash(filepath)
-            cl_metadata.md5 = CLMetaData.compute_md5(filepath)
+            cl_metadata.dHash = cl_metadata.compute_dhash(filepath)
+            cl_metadata.md5 = cl_metadata.compute_md5(filepath)
         return cl_metadata
 
     def is_video(self):
@@ -104,7 +104,7 @@ class CLMetaData:
         """
         return self.MIMEType is not None and self.MIMEType.startswith("image")
 
-    def compute_dhash(self):
+    def compute_dhash(self, filepath):
         """
         Compute the difference hash (dHash) of the media.
 
@@ -112,13 +112,13 @@ class CLMetaData:
             str: The computed dHash, or None if the media type is unsupported.
         """
         if self.is_video():
-            return VideoHash(path=self.path).hash
+            return VideoHash(path=filepath).hash
         elif self.is_image():
-            return bin(int(str(ImageHash(Image.open(self.path))), 16))
+            return bin(int(str(ImageHash(Image.open(filepath))), 16))
         else:
             return None
 
-    def compute_md5(self):
+    def compute_md5(self, filepath):
         """
         Compute the MD5 hash of the media.
 
@@ -129,7 +129,7 @@ class CLMetaData:
             cmd = [
                 "ffmpeg",
                 "-i",
-                self.path,
+                filepath,
                 "-an",
                 "-map",
                 "0:v",
@@ -155,7 +155,7 @@ class CLMetaData:
                 raise RuntimeError(f"ffmpeg failed with exit code {exit_code}")
             return md5_hash.hexdigest()
         elif self.is_image():
-            img = Image.open(self.path).convert("RGB")
+            img = Image.open(filepath).convert("RGB")
             md5_hash = hashlib.md5()
             raw_data = img.tobytes()
             for i in range(0, len(raw_data), self.chunk_size):
