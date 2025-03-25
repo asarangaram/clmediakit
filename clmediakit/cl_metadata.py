@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 from imagehash import dhash as ImageHash
 from videohash import VideoHash
@@ -17,6 +18,7 @@ class CLMetaData:
 
     def __init__(
         self,
+        filepath,
         CreateDate=None,
         FileSize=None,
         ImageHeight=None,
@@ -39,6 +41,7 @@ class CLMetaData:
             dHash (str): Difference hash of the media.
             md5 (str): MD5 hash of the media.
         """
+        self.filepath = filepath
         self.CreateDate = CreateDate
         self.FileSize = FileSize
         self.ImageHeight = ImageHeight
@@ -47,6 +50,31 @@ class CLMetaData:
         self.MIMEType = MIMEType
         self.dHash = dHash
         self.md5 = md5
+
+    def __repr__(self):
+        return f"CLMetaData({self.__dict__})"
+
+    def __str__(self):
+        str = "{ "
+        for key, value in self.__dict__.items():
+            if value is not None:
+                str += f"{key}: {value}, "
+        str += "}"
+        return str
+
+    def values(self):
+        res = ", ".join(
+            str(value) if value is not None else "None"
+            for value in self.__dict__.values()
+        )
+        return res
+
+    def keys(self):
+        res = ", ".join(
+            str(value) if value is not None else "None"
+            for value in self.__dict__.keys()
+        )
+        return res
 
     @classmethod
     def from_media(cls, filepath, extractor=None):
@@ -60,6 +88,7 @@ class CLMetaData:
         Returns:
             CLMetaData: An instance of CLMetaData with extracted metadata.
         """
+        start_time = time.time()
         if extractor is None:
             extractor = MetadataExtractor()
         metadata = extractor.extract_metadata(
@@ -74,6 +103,7 @@ class CLMetaData:
             ],
         )
         cl_metadata = CLMetaData(
+            filepath,
             CreateDate=metadata.get("CreateDate"),
             FileSize=metadata.get("FileSize"),
             ImageHeight=metadata.get("ImageHeight"),
@@ -84,6 +114,8 @@ class CLMetaData:
         if cl_metadata.MIMEType is not None:
             cl_metadata.dHash = cl_metadata.compute_dhash(filepath)
             cl_metadata.md5 = cl_metadata.compute_md5(filepath)
+        end_time = time.time()
+        cl_metadata.elapsed_time_ms = (end_time - start_time) * 1000
         return cl_metadata
 
     def is_video(self):
