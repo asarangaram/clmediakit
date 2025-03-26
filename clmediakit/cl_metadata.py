@@ -1,3 +1,4 @@
+from datetime import datetime
 import subprocess
 import time
 
@@ -102,9 +103,15 @@ class CLMetaData:
                 "MIMEType",
             ],
         )
+        CreateDate = metadata.get("CreateDate")
+        if CreateDate is not None:
+            try:
+                CreateDate = datetime.strptime(CreateDate, "%Y:%m:%d %H:%M:%S")
+            except ValueError:
+                CreateDate = None
         cl_metadata = CLMetaData(
             filepath,
-            CreateDate=metadata.get("CreateDate"),
+            CreateDate=CreateDate,
             FileSize=metadata.get("FileSize"),
             ImageHeight=metadata.get("ImageHeight"),
             ImageWidth=metadata.get("ImageWidth"),
@@ -194,4 +201,8 @@ class CLMetaData:
                 md5_hash.update(raw_data[i : i + self.chunk_size])
             return md5_hash.hexdigest()
         else:
-            return None
+            md5_hash = hashlib.md5()
+            with open(filepath, "rb") as f:
+                while chunk := f.read(8192):  # 8KB = 8192 bytes
+                    md5_hash.update(chunk)
+            return md5_hash.hexdigest()

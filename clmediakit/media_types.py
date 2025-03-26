@@ -14,6 +14,22 @@ class MediaType(StrEnum):
     AUDIO = "audio"
     FILE = "file"
 
+    def from_mime(file_type: str):
+        if file_type.startswith("image"):
+            return MediaType.IMAGE
+        elif file_type.startswith("video"):
+            return MediaType.VIDEO
+        elif file_type.startswith("audio"):
+            return MediaType.AUDIO
+        elif file_type.startswith("text"):
+            """text = bytes_io.getvalue().decode("utf-8")
+            if contains_url(text):
+                return MediaType.URL
+            else:"""
+            return MediaType.TEXT
+        else:
+            return MediaType.FILE
+
 
 def contains_url(text):
     if "\n" in text or "\r" in text:
