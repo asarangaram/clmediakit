@@ -63,6 +63,9 @@ class CLMetaData:
         str += "}"
         return str
 
+    def to_dict(self):
+        return {k: v for k, v in self.__dict__.items() if not k.startswith("_")}
+
     def values(self):
         res = ", ".join(
             str(value) if value is not None else "None"
