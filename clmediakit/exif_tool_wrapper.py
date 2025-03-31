@@ -56,7 +56,7 @@ class MetadataExtractor:
 
         try:
             result = subprocess.run(
-                ["exiftool", "-j"] + tag_args + [filepath],  # -j: JSON output
+                ["exiftool", "-n", "-j"] + tag_args + [filepath],  # -j: JSON output
                 capture_output=True,
                 text=True,
                 check=True,
