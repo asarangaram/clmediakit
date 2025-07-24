@@ -2,8 +2,9 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ['clmediakit']
+[tool.setuptools.packages.find]
+where = ["."] # This tells setuptools to look for packages starting from the current directory
+include = ["clmediakit*"] # This tells setuptools to include all packages that start with 'clmediakit'
 
 [project]
 name = "clmediakit"
