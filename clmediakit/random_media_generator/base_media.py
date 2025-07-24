@@ -6,7 +6,7 @@ from typing import List, Optional
 import cv2
 
 from .exif_metadata import ExifMetadata
-from .TimeStamp import toTimeStamp, fromTimeStamp
+from ..timestamp  import toTimeStamp, fromTimeStamp
 
 
 class SupportedMIME:

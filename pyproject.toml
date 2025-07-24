@@ -17,6 +17,7 @@ dependencies = [
     "imagedominantcolor @ git+https://github.com/asarangaram/imagedominantcolor.git@e188d51758513a4a8f6d740c133c2b4e44b4ce35",
     "ImageHash==4.3.2",
     "numpy==2.2.3",
+    "opencv-python=4.12.0.88",
     "pillow==11.1.0",
     "PyWavelets==1.8.0",
     "scipy==1.15.2",
