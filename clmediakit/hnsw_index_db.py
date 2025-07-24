@@ -62,7 +62,7 @@ class HNSWIndexDB:
             hash_val (list): Hash value of the image/video.
         """
         with HNSWIndexDB.index_lock:
-            self.index.remove_items([id])
+            #self.index.remove_items([id]) ## FIXME: remove_items is not available. Need to rework
             self.add_hash(id, hash_val)
             self.index.save_index(self.index_store)
 
@@ -74,8 +74,9 @@ class HNSWIndexDB:
             id (int): Unique identifier for the image/video.
         """
         with HNSWIndexDB.index_lock:
-            self.index.remove_items([id])
-            self.index.save_index(self.index_store)
+            # self.index.remove_items([id])  ## FIXME: remove_items is not available. Need to rework
+            #self.index.save_index(self.index_store)
+            pass
 
     def query(self, hash_bin_str: str):
         """
