@@ -47,7 +47,18 @@ class CLMetaData:
         self.FileSize = FileSize
         self.ImageHeight = ImageHeight
         self.ImageWidth = ImageWidth
-        self.Duration = Duration
+        print(f"Duration is {Duration}")
+        if Duration is None:
+            self.Duration = Duration
+        elif isinstance(Duration, float):
+            self.Duration = Duration
+        elif isinstance(Duration, str):
+            try:
+                hh, mm, ss = Duration.split(":")
+                self.Duration = int(hh) * 3600 + int(mm) * 60 + float(ss)
+            except Exception:
+                raise Exception("Failed to retrive Duration")
+
         self.MIMEType = MIMEType
         self.dHash = dHash
         self.md5 = md5
