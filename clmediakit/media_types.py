@@ -1,9 +1,10 @@
-from datetime import datetime
 from enum import StrEnum
 from io import BytesIO
 import magic
 import re
-from marshmallow import fields, ValidationError, validate
+from marshmallow import fields, validate
+
+from .timestamp import toTimeStamp, fromTimeStamp
 
 
 class MediaType(StrEnum):
@@ -84,13 +85,13 @@ class MillisecondsSinceEpoch(fields.Field):
         if value is None:
             return None
 
-        return int(value.timestamp() * 1000)
+        return toTimeStamp(value)
 
     def _deserialize(self, value, attr, data, **kwargs):
         try:
             if isinstance(value, str):
                 value = int(value)
-            return datetime.fromtimestamp(value / 1000.0)
+            return fromTimeStamp(value)
         except (TypeError, ValueError):
             raise self.make_error("invalid", input=value)
 
@@ -104,7 +105,7 @@ class IntigerizedBool(fields.Field):
     def _deserialize(self, value, attr, data, **kwargs):
         try:
             if isinstance(value, str):
-                return False if value is "0" else True
-            return False if value is 0 else True
+                return False if value == "0" else True
+            return False if value == 0 else True
         except (TypeError, ValueError):
             raise self.make_error("invalid", input=value)
