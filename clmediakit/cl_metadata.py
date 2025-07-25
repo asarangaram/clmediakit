@@ -115,9 +115,10 @@ class CLMetaData:
                 "ImageWidth",
                 "Duration",
                 "MIMEType",
+                "DateTimeOriginal"
             ],
         )
-        CreateDate = metadata.get("CreateDate")
+        CreateDate = metadata.get("CreateDate", metadata.get("DateTimeOriginal"))
         if CreateDate is not None:
             try:
                 CreateDate = datetime.strptime(CreateDate, "%Y:%m:%d %H:%M:%S")
